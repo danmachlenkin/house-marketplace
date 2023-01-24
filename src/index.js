@@ -11,6 +11,7 @@ import Profile from './pages/Profile';
 import SignIn from './pages/SignIn';
 import ForgotPassword from './pages/ForgotPassword';
 import SignUp from './pages/SignUp';
+import PrivateRoute from './components/PrivateRoute';
 
 //React-Router-DOM
 import ReactDOM from "react-dom/client";
@@ -35,7 +36,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <SignIn />,
+        element: <PrivateRoute />,
       },
       {
         path: "/sign-in",

@@ -11,10 +11,15 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { db } from "../firebase.config";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";  
+
+//React-Toastify
+import {toast} from 'react-toastify';
 
 //Imports
 import { ReactComponent as ArrowRightIcon } from "../assets/svg/keyboardArrowRightIcon.svg";
 import visibilityIcon from "../assets/svg/visibilityIcon.svg";
+import OAuth from "../components/Oauth";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -53,11 +58,17 @@ function SignUp() {
       updateProfile(auth.currentUser, {
         displayName: name,
       })
+
+      const formDataCopy = {...formData};
+      delete formDataCopy.password;
+      formDataCopy.timestamp = serverTimestamp();
+
+      await setDoc(doc(db,'users',user.uid), formDataCopy)
       
 
       navigate('/');
     } catch (error) {
-      console.log(error);
+        toast.error('Something went wrong!');
     }
   };
   return (
@@ -115,6 +126,8 @@ function SignUp() {
             </button>
           </div>
         </form>
+
+        <OAuth />
 
         <Link to="/sign-in" className="registerLink">
           Sign In Instead
